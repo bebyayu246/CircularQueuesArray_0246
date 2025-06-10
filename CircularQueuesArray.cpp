@@ -69,4 +69,6 @@ class Queues{
         return;
     }
 
+    cout << "\nElements in the queue are...\n";
+
    
