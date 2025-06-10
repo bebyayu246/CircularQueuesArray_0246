@@ -116,4 +116,42 @@ int main()
             cin >> ch;
             cout << endl;
 
-           
+            switch (ch)
+            {
+                case '1':
+                {
+                    q.insert();
+                    break;
+                }
+                case '2':
+                {
+                    q.remove();
+                    break;
+                }
+                case '3':
+                {
+                    q.display();
+                    break;
+                }
+                case '4':
+                {
+                    return 0;
+                }
+                default:
+                {
+                    cout << "Invalid option!!" << endl;
+                    break;
+                }
+                }
+            }
+            catch ( exception &e)
+            {
+                cout << "Check for the values entered." << endl;
+            }
+        }
+};
+
+//fungsi rear untuk menambahkan data
+//fungsi front nilai utama atau pertama
+//ketika rear sudah ditambahkan maka dia berada di posisi index 0 (pertama) dan berada pada ujung disebur circular.
+//nilai dapat ditambahkan ke dalam kolom index tetapi hasilnya akan rear
