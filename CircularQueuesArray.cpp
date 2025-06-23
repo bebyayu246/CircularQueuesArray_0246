@@ -1,67 +1,137 @@
+/**
+ * @mainpage Documentation circular queues
+ * 
+ * @section Introduction
+ * Project ini merupakan project struktur data
+ * menggunakan struktur data queues dengan pendekatan circular arrays.
+ * 
+ * @section Operasi apa yang ada didalam projeknya
+ * - en queues for insert elements into queues
+ * - de queues for delete elements from queues
+ * - show data or display data
+ * @section How to use
+ * 1. Insert  
+ * 2. Delete
+ * 3. Display
+ * 4. Exit
+ * 
+ * @author yProfil
+ * -Nama  :
+ * -Nim   :
+ * -Kelas : 
+ * 
+ * @brief 
+ * @version 0.1
+ * @date 2025-06-23
+ * 
+ * @copyright Gibran@umy.ac.id (c) 2025
+ * 
+ */
 #include <iostream>
 using namespace std;
 
-class Queues{
-    private:
-    int FRONT,REAR, max = 5;
-    int queue_array[5];
+/**
+ * @class Queues
+ * @brief This class is for operation queues
+ * 
+ */
 
-    public:
-    Queues(){
-        FRONT = -1;
-        REAR  = -1;
+class Queues //kelas yang mengimplementasikan struktur data antrian (queue) menggunakan array statis.
+{
+private:
+    ///front menunjuk ke elemen pertama dalam antrian (yang akan dihapus/dikeluarkan berikutnya).
+    int FRONT;
+    ///REAR menunjuk ke elemen terakhir dalam antrian (tempat elemen baru akan ditambahkan). 
+    int REAR; 
+    ///max 5 maksudnya antrian memliki kapasitas 5 elemen
+    int max = 5; 
+    ///int queue_array[5];Ini adalah array (larik) dengan ukuran 5 yang digunakan untuk menyimpan elemen-elemen antrian. Array ini memiliki indeks dari 0 hingga 4.
+    int queue_array[5]; 
+                            
+public: 
+    /**
+     * @brief Construct a new Queues object
+     * set default queues null
+     * with front = -1 and rear = -1
+     */
+    Queues()
+    {
+        FRONT = -1; /// Inisialisasi: antrian kosong dan tidak ada elemen yang bisa diambil (dequeue).
+        REAR = -1;
     }
 
-        void insert() {
-            int num;
-            cout << " Enter a number: ";
-            cin >> num;
-            cout << endl;
+    /**
+     * @brief Method for entering data into a queues
+     * Fungsi ini bertujuan untuk memasukkan sebuah angka ke dalam antrian (queue)
+     */
+    void insert() 
+      ///Pengguna akan diminta memasukkan sebuah bilangan, lalu bilangan tersebut akan diproses (kemungkinan dimasukkan ke antrian).
+    {
+        int num; ///variabel publik nomor untuk mengidentifikasi nomor di elemen
+        cout << "Enter a number: "; ///menampilkan hasil dari tulisan "Enter a number"
+        cin >> num; ///Mengambil input dari pengguna melalui keyboard dan menyimpannya ke variabel num.
+        cout << endl; ///mengakhiri program yang telah dijalankan
 
-            //cek apakah antrian penuh
-            if (( FRONT == 0 && REAR == max - 1 ) || ( FRONT == REAR + 1 )) {
-                cout << " \nQueue overflow\n";
-                return;
-            }
-
-            //Cek apakah antrian kosong
-            if ( FRONT == -1 ) {
-                FRONT = 0;
-                REAR = 0;
-            }
-            else {
-                //jika REAR berada di posisi terakhir array, kembali ke awal array
-                if ( REAR == max - 1 )
-                REAR = 0;
-            else 
-                REAR = REAR + 1;
-            }
-            queue_array[REAR] = num;
+        /// cek apakah antrian penuh/Pengecekan Overflow (ketika antrian sudah penuh dan tidak bisa menambah elemen baru)
+        if ((FRONT == 0 && REAR == max - 1) || (FRONT == REAR + 1)) ///kasus linear || kasus circular
+        {    ///FRONT == 0 (elemen pertama antrian ada di indeks 0)
+             ///REAR == max - 1 (elemen terakhir antrian ada di indeks terakhir array)
+             ///front==rear+1    REAR sudah "melewati" FRONT secara melingkar
+             ///jika max = 5, FRONT = 3, dan REAR = 2, maka FRONT == REAR + 1 → penuh.
+            cout << "\nQueue overflow\n"; ///tanda kalau sudah penuh
+            return;
         }
+        // cek apakah antrian kosong
+        if (FRONT == -1) ///tanda kalau antrian kosong 
+        {
+            FRONT = 0; ///RONT dan REAR ke 0 (indeks pertama array) 
+            REAR = 0; /// karena elemen pertama akan dimasukkan.
+        }
+        else
+        {
+            /// jika REAR berada di posisi terakhir array, kembali ke awal array (circular)
+            if (REAR == max - 1) ///Mengecek REAR sudah berada di indeks terakhir array
+                REAR = 0; ///penanda kalau disuruh ke awal array (circular)
+            else
+                REAR = REAR + 1;
+        }
+        queue_array[REAR] = num; ///Menyimpan nilai num ke dalam array queue_array pada posisi yang ditunjuk oleh REAR
+    }
         
-        void remove() {
-            //cek apakah antrian kosong
+    /**
+     * @brief fungsi ini untuk menghapus data yang tidak mengembalikan nilai
+     * 
+     */
+    void remove()
+        ///fungsi ini untuk menghapus data yang tidak mengembalikan nilai
+         {
+            ///cek apakah antrian kosong
             if ( FRONT == -1 ) {
                 cout << " Queue underflow\n";
                 return;
             }
             cout << "\nThe element deleted from the queue is: " << queue_array[FRONT] << "\n";
 
-            //cek jika antrian hanya memiliki satu elemen
+            ///cek jika antrian hanya memiliki satu elemen
             if ( FRONT == REAR ) {
                 FRONT = 1;
                 REAR = 1;
             }
 
-            //jika elemen yang dihapus berada di posisi terakhir array, kembali ke awal array
+            ///jika elemen yang dihapus berada di posisi terakhir array, kembali ke awal array
             if ( FRONT == max -1 ) 
                  FRONT = 0;
             else    
                 FRONT = FRONT + 1;
         }
-        void display() {
-    int FRONT_position = FRONT;
-    int REAR_position = REAR;
+
+    /**
+     * @brief Menampilkan isi data dari suatu struktur data
+     * 
+     */
+    void display() {
+    int FRONT_position = FRONT; ///menyimpan posisi depan di dalam variabel front
+    int REAR_position = REAR; ///menyimpan posisi belakang di dalam variabel REAR
 
     //cek apakah antrian kosong
     if ( FRONT == -1 ) {
@@ -98,10 +168,15 @@ class Queues{
     }   
 };
 
+/**
+ * @brief titik awal eksekusi program yang akan dijalankan
+ * 
+ * @return int 
+ */
 int main()
 {
-    Queues q;
-    char ch;
+    Queues q; ///object untuk menggunakan queues
+    char ch; ///object untuk menggunakan character 
 
     while (true)
     {
@@ -150,6 +225,7 @@ int main()
             }
         }
 };
+
 
 //fungsi rear untuk menambahkan data
 //fungsi front nilai utama atau pertama
